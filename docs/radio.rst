@@ -9,7 +9,7 @@ networks.
 The radio module is conceptually very simple:
 
 * Broadcast messages are of a certain configurable length (up to 251 bytes).
-* Messages received are read from a queue of configurable size (the larger the queue the more RAM is used). If the queue is full, new messages are ignored.
+* Messages received are read from a queue of configurable size (the larger the queue the more RAM is used). If the queue is full, new messages are ignored. Reading a message removes it from the queue.
 * Messages are broadcast and received on a preselected channel (numbered 0-100).
 * Broadcasts are at a certain level of power - more power means more range.
 * Messages are filtered by address (like a house number) and group (like a named recipient at the specified address).
@@ -135,22 +135,21 @@ Functions
 
 .. py:function:: receive_all()
 
-    Returns a tuple containing four values representing the next incoming
+    Returns a tuple containing three values representing the next incoming
     message on the message queue. If there no pending messages then ``None``
     is returned.
 
-    The four values in the tuple represent:
+    The three values in the tuple represent:
 
     * the next incoming message on the message queue as bytes.
-    * the RSSI signal strength: a value between 0 (strongest) and 255 (weakest).
-    * the approximate distance: equivalent to ``math.pow(10, (rssi - tx_power_at_1m) / (-10 * path_loss_exponent))``
-    * a timestamp: when the signal was receieved.
+    * the RSSI signal strength: a value between 0 (strongest) and 255 (weakest) as measured in ???? (TBC).
+    * a timestamp: the value returned by `microbit.current_time` when the signal was receieved.
 
     For example::
 
-        msg, rssi, distance, timestamp = radio.receive_all()
+        msg, rssi, timestamp = radio.receive_all()
 
-    This function is useful providing information needed for triangulation
+    This function is useful for providing information needed for triangulation
     and/or triliteration with other micro:bit devices.
 
 
