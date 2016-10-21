@@ -15,6 +15,7 @@ The radio module is conceptually very simple:
 * Messages are filtered by address (like a house number) and group (like a named recipient at the specified address).
 * The rate of throughput can be one of three pre-determined settings.
 * Send and receieve bytes to work with arbitrary data.
+* Use `receive_all` to obtain a notion of receiving signal strength and distance.
 * As a convenience for children, it's easy to send and receive messages as strings.
 * The default configuration is both sensible and compatible with other platforms that target the BBC micro:bit.
 
@@ -131,6 +132,27 @@ Functions
     the prepended bytes before converting to a string.
 
     A ``ValueError`` exception is raised if conversion to string fails.
+
+.. py:function:: receive_all()
+
+    Returns a tuple containing four values representing the next incoming
+    message on the message queue. If there no pending messages then ``None``
+    is returned.
+
+    The four values in the tuple represent:
+
+    * the next incoming message on the message queue as bytes.
+    * the RSSI signal strength: a value between 0 (strongest) and 255 (weakest).
+    * the approximate distance: equivalent to ``math.pow(10, (rssi - tx_power_at_1m) / (-10 * path_loss_exponent))``
+    * a timestamp: when the signal was receieved.
+
+    For example::
+
+        msg, rssi, distance, timestamp = radio.receive_all()
+
+    This function is useful providing information needed for triangulation
+    and/or triliteration with other micro:bit devices.
+
 
 Examples
 --------
