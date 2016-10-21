@@ -142,7 +142,7 @@ Functions
     The three values in the tuple represent:
 
     * the next incoming message on the message queue as bytes.
-    * the RSSI signal strength: a value between 0 (strongest) and 255 (weakest) as measured in -dBm. For example, a return value of ``54`` represents ``-54 dBm``.
+    * the RSSI signal strength: a value between 0 (strongest) and -255 (weakest) as measured in dBm.
     * a timestamp: the value returned by `microbit.current_time` when the signal was receieved.
 
     For example::
